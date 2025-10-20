@@ -90,6 +90,54 @@ const Index = () => {
     pdf.save(`${invoiceDetails.invoiceNumber}.pdf`);
   };
 
+  // Chat group and contacts helpers
+  const WHATSAPP_GROUP_URL = 'https://chat.whatsapp.com/JlM4hjJPTziIjlUzpq7Z4L';
+  const handleChatGroup = () => {
+    window.open(WHATSAPP_GROUP_URL, '_blank');
+  };
+
+  const formatPhoneForWhatsApp = (phone: string) => phone.replace(/\D/g, '');
+  const openWhatsAppChat = (phone: string) => {
+    const digits = formatPhoneForWhatsApp(phone);
+    const url = `https://wa.me/${digits}`;
+    window.open(url, '_blank');
+  };
+
+
+
+  const team = [
+    {
+      name: 'Riyas',
+      title: 'Head of Digital Strategy & Analytics',
+      phone: '+91 79026 12134',
+      bio: 'A data-driven digital marketer specializing in campaign strategy, audience insights, and performance analytics. Riyas ensures every marketing initiative aligns with measurable growth and brand objectives.',
+    },
+    {
+      name: 'Shameer',
+      title: 'Creative Director, Visuals & Motion Design',
+      phone: '+91 70340 78982',
+      bio: 'Leads the creative wing with expertise in video production, VFX, and 3D visualization. Shameer brings ideas to life through visually compelling storytelling and modern design aesthetics.',
+    },
+    {
+      name: 'Shibily',
+      title: 'Technical Lead, Web & Application Development',
+      phone: '+91 85903 13639',
+      bio: 'Architects and develops scalable digital platforms with a focus on performance, security, and user experience. Shibily bridges technology with creative design to build seamless web ecosystems.',
+    },
+    {
+      name: 'Sinan',
+      title: 'Social Media & Brand Engagement Strategist',
+      phone: '+91 75939 50362',
+      bio: 'Drives brand voice and audience engagement across platforms. Sinan blends creative storytelling with real-time trend analysis to grow communities and strengthen digital presence.',
+    },
+    {
+      name: 'Rahul',
+      title: 'SEO & Growth Marketing Specialist',
+      phone: '+91 90611 75940',
+      bio: 'Focused on search visibility, organic reach, and performance optimization. Rahul crafts data-backed strategies to enhance brand discoverability and digital ROI.',
+    },
+  ];
+
   return (
     <div className="min-h-screen bg-background py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
@@ -319,6 +367,62 @@ const Index = () => {
                 <p className="text-xs font-semibold text-muted-foreground">Analytics</p>
                 <p className="text-sm text-foreground mt-1">Graphs and performance insights will appear here.</p>
               </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Chat With Us & Call Us */}
+        <Card className="mt-8 shadow-lg border border-border">
+          <div className="p-8">
+            <h2 className="text-lg font-bold text-foreground mb-2">Chat With Us</h2>
+            <p className="text-sm text-muted-foreground mb-4">Open our WhatsApp group chat for support, updates, and additional requirements.</p>
+            <Button 
+              onClick={handleChatGroup}
+              size="lg"
+              className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-6"
+            >
+              <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 3C7.03 3 3 6.58 3 11c0 1.99.74 3.83 2 5.29L4 21l4.85-1.27C10.03 20.58 11 20.77 12 20.77c4.97 0 9-3.58 9-8.77S16.97 3 12 3z"/>
+              </svg>
+              Chat on WhatsApp
+            </Button>
+            <p className="mt-2 text-xs text-muted-foreground">Note: Clicking opens the WhatsApp group chat.</p>
+
+
+          </div>
+        </Card>
+
+        {/* Team Overview */}
+        <Card className="mt-8 shadow-lg border border-border">
+          <div className="p-8">
+            <h2 className="text-lg font-bold text-foreground mb-4">Team Overview</h2>
+            <div className="space-y-6">
+              {team.map((t) => (
+                <div key={t.phone} className="rounded-lg border border-border p-4 bg-muted/30">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <p className="text-sm font-bold text-foreground">{t.name} — {t.title}</p>
+                      <p className="text-xs text-muted-foreground mt-1">📞 {t.phone}</p>
+                      <p className="text-sm text-foreground mt-2">{t.bio}</p>
+                    </div>
+                    <div className="flex-shrink-0 flex gap-2">
+                      <a
+                        href={`tel:${formatPhoneForWhatsApp(t.phone)}`}
+                        className="px-3 py-2 rounded-md bg-foreground text-background text-xs font-semibold hover:bg-foreground/90"
+                      >
+                        Call
+                      </a>
+                      <Button
+                        variant="outline"
+                        onClick={() => openWhatsAppChat(t.phone)}
+                        className="text-xs"
+                      >
+                        WhatsApp
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
         </Card>
