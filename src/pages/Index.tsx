@@ -259,7 +259,7 @@ const Index = () => {
                 <svg className="w-7 h-7 mr-3" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M21.51 11.87l-4.5-7.79C16.6 3.37 15.82 3 15 3H9c-.82 0-1.6.37-2.01 1.08l-4.5 7.79c-.2.34-.49.85-.49 1.29v5.59C2 19.99 3.01 21 4.25 21h15.5c1.24 0 2.25-1.01 2.25-2.25v-5.59c0-.44-.29-.95-.49-1.29zM12 17.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/>
                 </svg>
-                Pay ₹{invoiceDetails.advance.toLocaleString('en-IN')} Now
+                Click here to pay now
               </Button>
               <p className="text-sm text-muted-foreground font-medium">
                 Secure payment via Google Pay / UPI
