@@ -57,27 +57,35 @@ const Index = () => {
   const handleDownloadPDF = async () => {
     if (!invoiceRef.current) return;
     const element = invoiceRef.current;
-    const canvas = await html2canvas(element, { scale: 2 });
+
+    const canvas = await html2canvas(element, {
+      scale: 2,
+      useCORS: true,
+    });
     const imgData = canvas.toDataURL("image/png");
 
-    const pdf = new jsPDF("p", "mm", "a4");
+    // Decide orientation based on content aspect ratio
+    const pagePortraitRatio = 210 / 297; // A4 portrait
+    const canvasRatio = canvas.width / canvas.height;
+    const orientation: 'p' | 'l' = canvasRatio > pagePortraitRatio ? 'l' : 'p';
+
+    const pdf = new jsPDF(orientation, "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
 
-    const imgProps = pdf.getImageProperties(imgData);
-    const imgWidth = pdfWidth;
-    const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+    // Fit the entire invoice into one page with margins
+    const margin = 10; // mm
+    const availableWidth = pdfWidth - margin * 2;
+    const availableHeight = pdfHeight - margin * 2;
 
-    let heightLeft = imgHeight;
+    const scale = Math.min(availableWidth / canvas.width, availableHeight / canvas.height);
+    const imgWidth = canvas.width * scale;
+    const imgHeight = canvas.height * scale;
 
-    pdf.addImage(imgData, "PNG", 0, 0, imgWidth, imgHeight);
-    heightLeft -= pdfHeight;
+    const x = (pdfWidth - imgWidth) / 2;
+    const y = (pdfHeight - imgHeight) / 2;
 
-    while (heightLeft > 0) {
-      pdf.addPage();
-      pdf.addImage(imgData, "PNG", 0, -(imgHeight - heightLeft), imgWidth, imgHeight);
-      heightLeft -= pdfHeight;
-    }
+    pdf.addImage(imgData, "PNG", x, y, imgWidth, imgHeight);
 
     pdf.save(`${invoiceDetails.invoiceNumber}.pdf`);
   };
@@ -217,8 +225,8 @@ const Index = () => {
                   <p className="text-3xl font-bold text-success">₹{invoiceDetails.advance.toLocaleString('en-IN')}</p>
                 </div>
                 <div className="border-l-4 border-muted-foreground pl-6 py-4">
-                  <p className="text-sm font-bold text-foreground mb-2">70% Balance Payment</p>
-                  <p className="text-xs text-muted-foreground mb-3">Due upon final delivery</p>
+                  <p className="text-sm font-bold text-foreground mb-2">Ongoing & Phase-Based Payments</p>
+                  <p className="text-xs text-muted-foreground mb-3">Covers operational costs (content production, ad spend, tools) and periodic service fees based on phases or deliverables.</p>
                   <p className="text-3xl font-bold text-muted-foreground">₹{invoiceDetails.remaining.toLocaleString('en-IN')}</p>
                 </div>
               </div>
