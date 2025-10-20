@@ -17,7 +17,7 @@ const Index = () => {
     },
     paymentAccount: {
       name: "Muhammed Riyas",
-      upi: "7902612134",
+      upi: "7902612134@superyes",
       contact: "+91 8590313639",
       email: "hello@bragtly.com"
     },
@@ -46,7 +46,7 @@ const Index = () => {
 
   const handlePayment = () => {
     // UPI payment link with phone number
-    const upiLink = `upi://pay?pa=7902612134@paytm&pn=Bragtly&mc=0000&tid=CAFCO${Date.now()}&tr=CAFCOINV001&tn=Advance Payment CAFCO Campaign&am=${invoiceDetails.advance}&cu=INR`;
+    const upiLink = `upi://pay?pa=7902612134@superyes&pn=Bragtly&mc=0000&tid=CAFCO${Date.now()}&tr=CAFCOINV001&tn=Advance Payment CAFCO Campaign&am=${invoiceDetails.advance}&cu=INR`;
     
     // Open UPI link
     window.location.href = upiLink;
@@ -251,6 +251,9 @@ const Index = () => {
         <Card className="shadow-lg border-x border-b border-border rounded-b-2xl">
           <div className="p-8">
             <div className="flex flex-col items-center gap-4">
+              <p className="text-xs text-muted-foreground font-semibold">
+                Payable now: ₹{invoiceDetails.advance.toLocaleString('en-IN')}
+              </p>
               <Button 
                 onClick={handlePayment}
                 size="lg"
