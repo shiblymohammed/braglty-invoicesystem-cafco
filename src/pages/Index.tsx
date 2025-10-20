@@ -4,16 +4,31 @@ import { Separator } from "@/components/ui/separator";
 
 const Index = () => {
   const invoiceDetails = {
-    invoiceNumber: "CAFCO-INV-001",
+    invoiceNumber: "BRG-2025-001",
     date: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' }),
-    clientName: "CAFCO HOMES",
-    clientAddress: "Furniture Solutions Provider",
+    dueDate: "On or before project delivery",
+    from: {
+      name: "Muhammed Shibily A",
+      email: "shibilymo[email protected]",
+      phone: "+91 8590313639"
+    },
+    billTo: {
+      name: "CAFCO TRADING",
+      business: "Furniture Solutions Provider"
+    },
+    campaignTitle: "Rapid Sale Campaign - 1 Month",
     services: [
-      { description: "Social Media Handling", quantity: "1 month", price: "Included" },
-      { description: "Local SEO (Google Reviews, Profile)", quantity: "1", price: "Included" },
-      { description: "Meta Ads Setup (Excludes Ad Budget)", quantity: "1", price: "Included" },
-      { description: "Posters", quantity: "10", price: "Included" },
-      { description: "Presentation Videos", quantity: "4", price: "Included" },
+      { description: "Social Media Handling (1 Month Campaign)", amount: "Included" },
+      { description: "Local SEO - Google Review & Profile Management", amount: "Included" },
+      { description: "Meta Ads Setup & Management (Ad Budget Excluded)", amount: "Included" },
+      { description: "Custom Design Posters (10 Designs)", amount: "Included" },
+      { description: "Presentation Videos (4 Videos)", amount: "Included" },
+      { description: "Basic Brandbook & Colour Palette for Existing Logo", amount: "Included" },
+    ],
+    exclusions: [
+      "Meta Ads running cost (Ad Budget) - to be handled by client",
+      "Domain purchase cost (if required beyond basic setup)",
+      "Any third-party integrations or services not mentioned in the scope"
     ],
     total: 25000,
     advance: 7500,
@@ -21,8 +36,8 @@ const Index = () => {
   };
 
   const handlePayment = () => {
-    // UPI payment link - replace with actual UPI ID
-    const upiLink = `upi://pay?pa=bragtly@okaxis&pn=Bragtly&mc=0000&tid=CafcoAdvanceOct25&tr=CAFCOINV123&tn=Advance Payment for CAFCO Campaign&am=${invoiceDetails.advance}&cu=INR`;
+    // UPI payment link with phone number
+    const upiLink = `upi://pay?pa=7902612134@paytm&pn=Bragtly&mc=0000&tid=CAFCO${Date.now()}&tr=CAFCOINV001&tn=Advance Payment CAFCO Campaign&am=${invoiceDetails.advance}&cu=INR`;
     
     // Open UPI link
     window.location.href = upiLink;
@@ -30,124 +45,186 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="bg-card rounded-t-2xl shadow-lg border border-border p-8">
+      <div className="max-w-5xl mx-auto">
+        {/* Header - Dark Background */}
+        <div className="bg-foreground text-background rounded-t-2xl shadow-lg p-8">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
             <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-primary mb-2">Bragtly</h1>
-              <p className="text-sm text-muted-foreground">Digital Marketing Solutions</p>
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-3">BRAGTLY</h1>
+              <p className="text-xs sm:text-sm opacity-90">Digital Marketing • Web App Development • Video Production • Business Growth Strategy</p>
             </div>
             <div className="text-left sm:text-right">
-              <p className="text-sm font-semibold text-foreground">INVOICE</p>
-              <p className="text-sm text-muted-foreground">{invoiceDetails.invoiceNumber}</p>
-              <p className="text-sm text-muted-foreground">{invoiceDetails.date}</p>
+              <p className="text-2xl font-bold mb-1">INVOICE</p>
+              <p className="text-sm opacity-90">{invoiceDetails.invoiceNumber}</p>
             </div>
           </div>
         </div>
 
-        {/* Client Info */}
+        {/* Invoice Dates */}
         <Card className="shadow-lg border-x border-border">
-          <div className="p-8">
-            <div className="grid sm:grid-cols-2 gap-6">
+          <div className="p-6 bg-muted/30">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
               <div>
-                <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Invoice To</p>
-                <p className="text-lg font-bold text-foreground">{invoiceDetails.clientName}</p>
-                <p className="text-sm text-muted-foreground">{invoiceDetails.clientAddress}</p>
+                <span className="font-semibold text-foreground">INVOICE DATE:</span>
+                <span className="ml-3 text-muted-foreground">{invoiceDetails.date}</span>
               </div>
-              <div className="sm:text-right">
-                <p className="text-xs font-semibold text-muted-foreground uppercase mb-2">Campaign</p>
-                <p className="text-lg font-semibold text-foreground">Rapid Sale Campaign</p>
+              <div>
+                <span className="font-semibold text-foreground">DUE DATE:</span>
+                <span className="ml-3 text-muted-foreground">{invoiceDetails.dueDate}</span>
               </div>
             </div>
           </div>
         </Card>
 
-        {/* Services Table */}
+        {/* From & Bill To */}
+        <Card className="shadow-lg border-x border-border">
+          <div className="p-8">
+            <div className="grid sm:grid-cols-2 gap-8">
+              <div>
+                <p className="text-xs font-bold text-muted-foreground uppercase mb-3">FROM</p>
+                <p className="text-lg font-bold text-foreground mb-1">{invoiceDetails.from.name}</p>
+                <p className="text-sm text-muted-foreground">Email: {invoiceDetails.from.email}</p>
+                <p className="text-sm text-muted-foreground">Phone: {invoiceDetails.from.phone}</p>
+              </div>
+              <div>
+                <p className="text-xs font-bold text-muted-foreground uppercase mb-3">BILL TO</p>
+                <p className="text-lg font-bold text-foreground mb-1">{invoiceDetails.billTo.name}</p>
+                <p className="text-sm text-muted-foreground">{invoiceDetails.billTo.business}</p>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Campaign Description */}
+        <Card className="shadow-lg border-x border-border">
+          <div className="p-8">
+            <div className="grid lg:grid-cols-3 gap-6">
+              <div className="lg:col-span-2">
+                <h2 className="text-lg font-bold text-foreground mb-4">Campaign Description</h2>
+                <p className="text-base font-semibold text-foreground mb-4">{invoiceDetails.campaignTitle}</p>
+                
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase mb-3">Scope of Work</h3>
+                <ul className="space-y-2">
+                  {invoiceDetails.services.map((service, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-primary mr-2 mt-1">•</span>
+                      <span className="text-sm text-foreground">{service.description}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              
+              <div className="bg-muted/30 p-6 rounded-lg border border-border">
+                <h3 className="text-sm font-bold text-foreground uppercase mb-4">Exclusions</h3>
+                <ul className="space-y-3">
+                  {invoiceDetails.exclusions.map((exclusion, index) => (
+                    <li key={index} className="flex items-start">
+                      <span className="text-destructive mr-2 mt-0.5 text-xs">□</span>
+                      <span className="text-xs text-muted-foreground leading-relaxed">{exclusion}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
+        </Card>
+
+        {/* Amount */}
         <Card className="shadow-lg border-x border-border">
           <div className="overflow-x-auto">
             <table className="w-full">
-              <thead className="bg-muted/50">
+              <thead className="bg-foreground text-background">
                 <tr>
-                  <th className="px-8 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  <th className="px-8 py-4 text-left text-xs font-bold uppercase tracking-wider">
                     Description
                   </th>
-                  <th className="px-8 py-4 text-left text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    Quantity
-                  </th>
-                  <th className="px-8 py-4 text-right text-xs font-semibold text-muted-foreground uppercase tracking-wider">
-                    Price (INR)
+                  <th className="px-8 py-4 text-right text-xs font-bold uppercase tracking-wider">
+                    Amount (INR)
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-border">
-                {invoiceDetails.services.map((service, index) => (
-                  <tr key={index} className="hover:bg-muted/30 transition-colors">
-                    <td className="px-8 py-4 text-sm text-foreground">{service.description}</td>
-                    <td className="px-8 py-4 text-sm text-foreground">{service.quantity}</td>
-                    <td className="px-8 py-4 text-sm text-foreground text-right">{service.price}</td>
-                  </tr>
-                ))}
+              <tbody>
+                <tr className="border-b border-border">
+                  <td className="px-8 py-6 text-sm font-medium text-foreground">
+                    {invoiceDetails.campaignTitle}
+                  </td>
+                  <td className="px-8 py-6 text-lg font-bold text-foreground text-right">
+                    ₹{invoiceDetails.total.toLocaleString('en-IN')}
+                  </td>
+                </tr>
+                <tr className="bg-muted/50">
+                  <td className="px-8 py-6 text-base font-bold text-foreground">
+                    Total (INR)
+                  </td>
+                  <td className="px-8 py-6 text-xl font-bold text-foreground text-right">
+                    ₹{invoiceDetails.total.toLocaleString('en-IN')}
+                  </td>
+                </tr>
               </tbody>
             </table>
           </div>
         </Card>
 
-        {/* Total & Payment Summary */}
-        <Card className="shadow-lg border-x border-b border-border rounded-b-2xl">
+        {/* Payment Terms */}
+        <Card className="shadow-lg border-x border-border">
           <div className="p-8">
-            <div className="flex justify-end mb-6">
-              <div className="w-full sm:w-80">
-                <div className="flex justify-between py-3 border-b border-border">
-                  <span className="text-sm font-medium text-foreground">Campaign Total</span>
-                  <span className="text-sm font-semibold text-foreground">₹{invoiceDetails.total.toLocaleString('en-IN')}</span>
-                </div>
-                <div className="flex justify-between py-4 bg-success/10 -mx-4 px-4 rounded-lg mt-4">
-                  <span className="text-base font-bold text-success">Advance Due (30%)</span>
-                  <span className="text-base font-bold text-success">₹{invoiceDetails.advance.toLocaleString('en-IN')}</span>
-                </div>
-                <div className="flex justify-between py-3 mt-2">
-                  <span className="text-sm text-muted-foreground">Balance after approval</span>
-                  <span className="text-sm text-muted-foreground">₹{invoiceDetails.remaining.toLocaleString('en-IN')}</span>
-                </div>
+            <h2 className="text-lg font-bold text-foreground mb-6">Payment Terms</h2>
+            <div className="grid sm:grid-cols-2 gap-6">
+              <div className="border-l-4 border-success pl-6 py-4">
+                <p className="text-sm font-bold text-foreground mb-2">30% Advance Payment</p>
+                <p className="text-xs text-muted-foreground mb-3">Due immediately to begin project</p>
+                <p className="text-3xl font-bold text-success">₹{invoiceDetails.advance.toLocaleString('en-IN')}</p>
+              </div>
+              <div className="border-l-4 border-muted-foreground pl-6 py-4">
+                <p className="text-sm font-bold text-foreground mb-2">70% Balance Payment</p>
+                <p className="text-xs text-muted-foreground mb-3">Due upon final delivery</p>
+                <p className="text-3xl font-bold text-muted-foreground">₹{invoiceDetails.remaining.toLocaleString('en-IN')}</p>
               </div>
             </div>
+          </div>
+        </Card>
 
-            <Separator className="my-6" />
-
-            {/* Payment Button */}
+        {/* Payment Button */}
+        <Card className="shadow-lg border-x border-b border-border rounded-b-2xl">
+          <div className="p-8">
             <div className="flex flex-col items-center gap-4">
               <Button 
                 onClick={handlePayment}
                 size="lg"
-                className="w-full sm:w-auto bg-success hover:bg-success/90 text-success-foreground font-semibold text-base px-12 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
+                className="w-full sm:w-auto bg-success hover:bg-success/90 text-success-foreground font-bold text-lg px-16 py-7 shadow-xl hover:shadow-2xl transition-all duration-300 transform hover:scale-105"
               >
-                <svg className="w-6 h-6 mr-3" viewBox="0 0 24 24" fill="currentColor">
+                <svg className="w-7 h-7 mr-3" viewBox="0 0 24 24" fill="currentColor">
                   <path d="M21.51 11.87l-4.5-7.79C16.6 3.37 15.82 3 15 3H9c-.82 0-1.6.37-2.01 1.08l-4.5 7.79c-.2.34-.49.85-.49 1.29v5.59C2 19.99 3.01 21 4.25 21h15.5c1.24 0 2.25-1.01 2.25-2.25v-5.59c0-.44-.29-.95-.49-1.29zM12 17.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"/>
                 </svg>
-                Pay ₹{invoiceDetails.advance.toLocaleString('en-IN')} Advance Now
+                Pay ₹{invoiceDetails.advance.toLocaleString('en-IN')} Now
               </Button>
-              <p className="text-xs text-muted-foreground">
+              <p className="text-sm text-muted-foreground font-medium">
                 Secure payment via Google Pay / UPI
               </p>
             </div>
           </div>
         </Card>
 
-        {/* Footer */}
-        <div className="mt-8 bg-muted/30 rounded-lg p-6 border border-border">
-          <div className="text-center mb-4">
-            <p className="text-sm font-semibold text-foreground mb-1">Bragtly Digital Marketing</p>
-            <p className="text-xs text-muted-foreground">Email: contact@bragtly.com | Phone: +91-XXXXXXXXXX</p>
-          </div>
-          <Separator className="my-4" />
-          <div className="text-xs text-muted-foreground space-y-1">
-            <p className="text-center">
-              <span className="font-semibold">Note:</span> Ad cost excluded from this invoice.
-            </p>
-            <p className="text-center">
-              Delivery within 14 business days from advance payment confirmation.
-            </p>
+        {/* Footer - Payment Details */}
+        <div className="mt-8 bg-foreground text-background rounded-lg p-6">
+          <h3 className="text-sm font-bold uppercase mb-4">Payment Details</h3>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
+            <div>
+              <p className="opacity-70 mb-1">ACCOUNT NAME</p>
+              <p className="font-semibold">{invoiceDetails.from.name}</p>
+            </div>
+            <div>
+              <p className="opacity-70 mb-1">PHONE / UPI</p>
+              <p className="font-semibold">7902612134</p>
+            </div>
+            <div>
+              <p className="opacity-70 mb-1">CONTACT</p>
+              <p className="font-semibold">{invoiceDetails.from.phone}</p>
+            </div>
+            <div>
+              <p className="opacity-70 mb-1">EMAIL</p>
+              <p className="font-semibold break-all">{invoiceDetails.from.email}</p>
+            </div>
           </div>
         </div>
       </div>
