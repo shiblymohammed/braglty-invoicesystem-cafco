@@ -9,8 +9,14 @@ const Index = () => {
     dueDate: "On or before project delivery",
     from: {
       name: "Muhammed Shibily A",
-      email: "shibilymo[email protected]",
+      email: "shibilymohammed75@gmail.com",
       phone: "+91 8590313639"
+    },
+    paymentAccount: {
+      name: "Muhammed Riyas",
+      upi: "7902612134",
+      contact: "+91 8590313639",
+      email: "hello@bragtly.com"
     },
     billTo: {
       name: "CAFCO TRADING",
@@ -211,19 +217,19 @@ const Index = () => {
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-xs">
             <div>
               <p className="opacity-70 mb-1">ACCOUNT NAME</p>
-              <p className="font-semibold">{invoiceDetails.from.name}</p>
+              <p className="font-semibold">{invoiceDetails.paymentAccount.name}</p>
             </div>
             <div>
               <p className="opacity-70 mb-1">PHONE / UPI</p>
-              <p className="font-semibold">7902612134</p>
+              <p className="font-semibold">{invoiceDetails.paymentAccount.upi}</p>
             </div>
             <div>
               <p className="opacity-70 mb-1">CONTACT</p>
-              <p className="font-semibold">{invoiceDetails.from.phone}</p>
+              <p className="font-semibold">{invoiceDetails.paymentAccount.contact}</p>
             </div>
             <div>
               <p className="opacity-70 mb-1">EMAIL</p>
-              <p className="font-semibold break-all">{invoiceDetails.from.email}</p>
+              <p className="font-semibold break-all">{invoiceDetails.paymentAccount.email}</p>
             </div>
           </div>
         </div>
