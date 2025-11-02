@@ -15,4 +15,16 @@ export default defineConfig(({ mode }) => ({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    chunkSizeWarningLimit: 600, // Increase warning limit to 600kb
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom', 'react-router-dom'],
+          ui: ['./src/components/ui'],
+          utils: ['./src/lib/utils.ts', './src/hooks'],
+        }
+      }
+    }
+  }
 }));

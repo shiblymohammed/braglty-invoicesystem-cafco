@@ -58,11 +58,25 @@ const Index = () => {
   const handleDownloadPDF = async () => {
     if (!invoiceRef.current) return;
     const element = invoiceRef.current;
+    
+    // Hide buttons before capturing
+    const buttonsContainer = document.querySelector('.pdf-hide-buttons');
+    let originalDisplay = '';
+    if (buttonsContainer) {
+      originalDisplay = (buttonsContainer as HTMLElement).style.display;
+      (buttonsContainer as HTMLElement).style.display = 'none';
+    }
 
     const canvas = await html2canvas(element, {
       scale: 2,
       useCORS: true,
     });
+    
+    // Restore buttons after capturing
+    if (buttonsContainer) {
+      (buttonsContainer as HTMLElement).style.display = originalDisplay;
+    }
+    
     const imgData = canvas.toDataURL("image/png");
 
     // Decide orientation based on content aspect ratio
@@ -259,7 +273,7 @@ const Index = () => {
             {/* Download and Payment Buttons */}
             <Card className="shadow-lg border-x border-b border-border rounded-b-2xl">
               <div className="p-8">
-                <div className="flex flex-col sm:flex-row justify-center gap-6">
+                <div className="flex flex-col sm:flex-row justify-center gap-6 pdf-hide-buttons">
                   <Button 
                     onClick={handleDownloadPDF}
                     size="lg"
