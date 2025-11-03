@@ -40,14 +40,13 @@ const Index = () => {
       "Domain purchase cost (if required beyond basic setup)",
       "Any third-party integrations or services not mentioned in the scope"
     ],
-    total: 25000,
-    advance: 7500,
-    remaining: 17500,
+    total: 13000,
+    upfront: 13000,
   };
 
   const handlePayment = () => {
     // UPI payment link with phone number
-    const upiLink = `upi://pay?pa=7902612134@superyes&pn=Bragtly&mc=0000&tid=CAFCO${Date.now()}&tr=CAFCOINV001&tn=Advance Payment CAFCO Campaign&am=${invoiceDetails.advance}&cu=INR`;
+    const upiLink = `upi://pay?pa=7902612134@superyes&pn=Bragtly&mc=0000&tid=CAFCO${Date.now()}&tr=CAFCOINV001&tn=Upfront Payment CAFCO Campaign&am=${invoiceDetails.upfront}&cu=INR`;
     
     // Open UPI link
     window.location.href = upiLink;
