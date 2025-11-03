@@ -10,8 +10,7 @@ const Invoice = () => {
   // New invoice (current)
   const invoiceNumber2 = "INV-2023-002";
   const services2 = [
-    { description: "Logo Design + Brand Identity", amount: 1000 },
-    { description: "Brand Guidelines: 6 Mockups", amount: 5000 },
+    { description: "Logo Design + Brand Identity", amount: 1500 },
     { description: "Hiring Poster (3x @ ₹500 each)", amount: 1500 },
     { description: "Influencer Video Collaboration", amount: 10000 },
   ];
@@ -20,8 +19,7 @@ const Invoice = () => {
   // Old invoice (completed)
   const invoiceNumber1 = "INV-2023-001";
   const services1 = [
-    { description: "Logo Design", amount: 1000 },
-    { description: "Brand Guidelines: 6 Mockups", amount: 5000 },
+    { description: "Logo Design", amount: 1500 },
     { description: "Hiring Poster (3x @ ₹500 each)", amount: 1500 },
     { description: "Influencer Video Collaboration", amount: 10000 },
   ];
