@@ -59,6 +59,52 @@ const Index = () => {
     if (!invoiceRef.current) return;
     const element = invoiceRef.current;
     
+    // Store original styles
+    const originalStyles = {
+      width: element.style.width,
+      maxWidth: element.style.maxWidth,
+      transform: element.style.transform,
+      transformOrigin: element.style.transformOrigin,
+      position: element.style.position,
+      left: element.style.left,
+      top: element.style.top,
+      zIndex: element.style.zIndex,
+    };
+
+    // Force desktop layout for PDF generation
+    element.style.width = '1200px';
+    element.style.maxWidth = '1200px';
+    element.style.position = 'fixed';
+    element.style.left = '-9999px';
+    element.style.top = '0';
+    element.style.zIndex = '-1';
+    element.style.transform = 'scale(1)';
+    element.style.transformOrigin = 'top left';
+
+    // Force all responsive elements to desktop layout
+    const responsiveElements = element.querySelectorAll('.flex-col, .sm\\:flex-row, .grid-cols-1, .sm\\:grid-cols-2, .sm\\:grid-cols-4');
+    const originalResponsiveStyles: { element: Element; styles: any }[] = [];
+    
+    responsiveElements.forEach((el) => {
+      const htmlEl = el as HTMLElement;
+      originalResponsiveStyles.push({
+        element: el,
+        styles: {
+          display: htmlEl.style.display,
+          flexDirection: htmlEl.style.flexDirection,
+          gridTemplateColumns: htmlEl.style.gridTemplateColumns,
+        }
+      });
+      
+      // Force desktop layout
+      if (htmlEl.classList.contains('flex-col')) {
+        htmlEl.style.flexDirection = 'row';
+      }
+      if (htmlEl.classList.contains('grid-cols-1')) {
+        htmlEl.style.gridTemplateColumns = 'repeat(2, minmax(0, 1fr))';
+      }
+    });
+    
     // Hide buttons before capturing
     const buttonsContainer = document.querySelector('.pdf-hide-buttons');
     let originalDisplay = '';
@@ -67,24 +113,34 @@ const Index = () => {
       (buttonsContainer as HTMLElement).style.display = 'none';
     }
 
+    // Wait for layout to settle
+    await new Promise(resolve => setTimeout(resolve, 100));
+
     const canvas = await html2canvas(element, {
       scale: 2,
       useCORS: true,
+      width: 1200,
+      windowWidth: 1200,
+      windowHeight: element.scrollHeight,
     });
     
-    // Restore buttons after capturing
+    // Restore all original styles
+    Object.assign(element.style, originalStyles);
+    
+    // Restore responsive element styles
+    originalResponsiveStyles.forEach(({ element, styles }) => {
+      Object.assign((element as HTMLElement).style, styles);
+    });
+    
+    // Restore buttons
     if (buttonsContainer) {
       (buttonsContainer as HTMLElement).style.display = originalDisplay;
     }
     
     const imgData = canvas.toDataURL("image/png");
 
-    // Decide orientation based on content aspect ratio
-    const pagePortraitRatio = 210 / 297; // A4 portrait
-    const canvasRatio = canvas.width / canvas.height;
-    const orientation: 'p' | 'l' = canvasRatio > pagePortraitRatio ? 'l' : 'p';
-
-    const pdf = new jsPDF(orientation, "mm", "a4");
+    // Always use portrait orientation for consistent layout
+    const pdf = new jsPDF('p', "mm", "a4");
     const pdfWidth = pdf.internal.pageSize.getWidth();
     const pdfHeight = pdf.internal.pageSize.getHeight();
 
@@ -157,8 +213,7 @@ const Index = () => {
   
   // New invoice services
   const services = [
-    { description: "Logo Design + Brand Identity", amount: 1000 },
-    { description: "Brand Guidelines: 6 Mockups", amount: 5000 },
+    { description: "Logo Design + Brand Identity", amount: 1500 },
     { description: "Hiring Poster (3x @ ₹500 each)", amount: 1500 },
     { description: "Influencer Video Collaboration", amount: 10000 },
   ];
