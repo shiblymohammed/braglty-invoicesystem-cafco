@@ -44,9 +44,16 @@ const Index = () => {
     upfront: 13000,
   };
 
+  // Payment breakdown
+  const total = 25000;
+  const paidAmount = 7500; // 30% already paid
+  const remainingAmount = 17500; // 70% pending
+  const nextMonthAdvance = 7500; // 30% advance for next month
+  const totalPayAmount = remainingAmount + nextMonthAdvance; // Total to be paid
+
   const handlePayment = () => {
     // UPI payment link with phone number
-    const upiLink = `upi://pay?pa=7902612134@superyes&pn=Bragtly&mc=0000&tid=CAFCO${Date.now()}&tr=CAFCOINV001&tn=Upfront Payment CAFCO Campaign&am=${invoiceDetails.upfront}&cu=INR`;
+    const upiLink = `upi://pay?pa=7902612134@superyes&pn=Bragtly&mc=0000&tid=CAFCO${Date.now()}&tr=CAFCOINV002&tn=Payment CAFCO Invoice&am=${totalPayAmount}&cu=INR`;
 
     // Open UPI link
     window.location.href = upiLink;
@@ -207,13 +214,6 @@ const Index = () => {
       bio: 'Focused on search visibility, organic reach, and performance optimization. Rahul crafts data-backed strategies to enhance brand discoverability and digital ROI.',
     },
   ];
-
-  // Payment breakdown
-  const total = 25000;
-  const paidAmount = 7500; // 30% already paid
-  const remainingAmount = 17500; // 70% pending
-  const nextMonthAdvance = 7500; // 30% advance for next month
-  const totalPayAmount = remainingAmount + nextMonthAdvance; // Total to be paid
 
   const services = [
     { description: "Total Project Amount", amount: total },
