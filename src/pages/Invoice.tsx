@@ -8,16 +8,19 @@ const Invoice = () => {
   const [currentDate] = useState(new Date().toLocaleDateString());
   
   // New invoice (current)
-  const invoiceNumber2 = "INV-2023-002";
+  const invoiceNumber2 = "INV-2025-002";
   const services2 = [
-    { description: "Logo Design + Brand Identity", amount: 1500 },
+    { description: "Logo Design + Brand Identity", amount: 8000 },
     { description: "Hiring Poster (3x @ ₹500 each)", amount: 1500 },
-    { description: "Influencer Video Collaboration", amount: 10000 },
+    { description: "Influencer Video Collaboration", amount: 15500 },
   ];
-  const total2 = services2.reduce((sum, service) => sum + service.amount, 0);
+  const total2 = 25000;
+  const paidAmount = 7500; // 30% already paid
+  const remainingAmount = 17500; // 70% pending
+  const nextMonthAdvance = 7500; // 30% advance for next month
   
   // Old invoice (completed)
-  const invoiceNumber1 = "INV-2023-001";
+  const invoiceNumber1 = "INV-2025-001";
   const services1 = [
     { description: "Logo Design", amount: 1500 },
     { description: "Hiring Poster (3x @ ₹500 each)", amount: 1500 },
@@ -87,7 +90,7 @@ const Invoice = () => {
             </table>
             
             <div className="flex justify-end mt-6">
-              <div className="w-1/3">
+              <div className="w-1/2">
                 <div className="flex justify-between py-2">
                   <span className="font-semibold">Subtotal:</span>
                   <span>₹{total2.toLocaleString()}</span>
@@ -97,9 +100,23 @@ const Invoice = () => {
                   <span>₹0.00</span>
                 </div>
                 <Separator className="my-2" />
-                <div className="flex justify-between py-2 font-bold">
+                <div className="flex justify-between py-2 font-bold text-lg">
                   <span>Total:</span>
                   <span>₹{total2.toLocaleString()}</span>
+                </div>
+                <Separator className="my-2" />
+                <div className="flex justify-between py-2 text-green-700">
+                  <span className="font-semibold">Paid (30%):</span>
+                  <span>₹{paidAmount.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between py-2 text-orange-600 font-bold">
+                  <span>Remaining Pending (70%):</span>
+                  <span>₹{remainingAmount.toLocaleString()}</span>
+                </div>
+                <Separator className="my-2" />
+                <div className="flex justify-between py-2 text-blue-700">
+                  <span className="font-semibold">Next Month Advance (30%):</span>
+                  <span>₹{nextMonthAdvance.toLocaleString()}</span>
                 </div>
               </div>
             </div>

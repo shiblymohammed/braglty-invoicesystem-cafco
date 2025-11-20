@@ -8,7 +8,7 @@ import html2canvas from "html2canvas";
 
 const Index = () => {
   const invoiceDetails = {
-    invoiceNumber: "BRG-2025-001",
+    invoiceNumber: "BRG-2025-002",
     date: new Date().toLocaleDateString('en-IN', { day: '2-digit', month: 'long', year: 'numeric' }),
     dueDate: "On or before project delivery",
     from: {
@@ -47,7 +47,7 @@ const Index = () => {
   const handlePayment = () => {
     // UPI payment link with phone number
     const upiLink = `upi://pay?pa=7902612134@superyes&pn=Bragtly&mc=0000&tid=CAFCO${Date.now()}&tr=CAFCOINV001&tn=Upfront Payment CAFCO Campaign&am=${invoiceDetails.upfront}&cu=INR`;
-    
+
     // Open UPI link
     window.location.href = upiLink;
   };
@@ -57,7 +57,7 @@ const Index = () => {
   const handleDownloadPDF = async () => {
     if (!invoiceRef.current) return;
     const element = invoiceRef.current;
-    
+
     // Store original styles
     const originalStyles = {
       width: element.style.width,
@@ -83,7 +83,7 @@ const Index = () => {
     // Force all responsive elements to desktop layout
     const responsiveElements = element.querySelectorAll('.flex-col, .sm\\:flex-row, .grid-cols-1, .sm\\:grid-cols-2, .sm\\:grid-cols-4');
     const originalResponsiveStyles: { element: Element; styles: any }[] = [];
-    
+
     responsiveElements.forEach((el) => {
       const htmlEl = el as HTMLElement;
       originalResponsiveStyles.push({
@@ -94,7 +94,7 @@ const Index = () => {
           gridTemplateColumns: htmlEl.style.gridTemplateColumns,
         }
       });
-      
+
       // Force desktop layout
       if (htmlEl.classList.contains('flex-col')) {
         htmlEl.style.flexDirection = 'row';
@@ -103,7 +103,7 @@ const Index = () => {
         htmlEl.style.gridTemplateColumns = 'repeat(2, minmax(0, 1fr))';
       }
     });
-    
+
     // Hide buttons before capturing
     const buttonsContainer = document.querySelector('.pdf-hide-buttons');
     let originalDisplay = '';
@@ -122,20 +122,20 @@ const Index = () => {
       windowWidth: 1200,
       windowHeight: element.scrollHeight,
     });
-    
+
     // Restore all original styles
     Object.assign(element.style, originalStyles);
-    
+
     // Restore responsive element styles
     originalResponsiveStyles.forEach(({ element, styles }) => {
       Object.assign((element as HTMLElement).style, styles);
     });
-    
+
     // Restore buttons
     if (buttonsContainer) {
       (buttonsContainer as HTMLElement).style.display = originalDisplay;
     }
-    
+
     const imgData = canvas.toDataURL("image/png");
 
     // Always use portrait orientation for consistent layout
@@ -208,16 +208,20 @@ const Index = () => {
     },
   ];
 
-  const [currentDate] = useState(new Date().toLocaleDateString());
-  
-  // New invoice services
+  // Payment breakdown
+  const total = 25000;
+  const paidAmount = 7500; // 30% already paid
+  const remainingAmount = 17500; // 70% pending
+  const nextMonthAdvance = 7500; // 30% advance for next month
+  const totalPayAmount = remainingAmount + nextMonthAdvance; // Total to be paid
+
   const services = [
-    { description: "Logo Design + Brand Identity", amount: 1500 },
-    { description: "Hiring Poster (3x @ ₹500 each)", amount: 1500 },
-    { description: "Influencer Video Collaboration", amount: 10000 },
+    { description: "Total Project Amount", amount: total },
+    { description: "Amount Already Paid (30%)", amount: paidAmount, isCredit: true },
+    { description: "Remaining Balance Due (70%)", amount: remainingAmount, isPending: true },
+    { description: "Next Month Advance (30%)", amount: nextMonthAdvance, isAdvance: true },
   ];
-  const total = services.reduce((sum, service) => sum + service.amount, 0);
-  
+
   return (
     <div className="min-h-screen bg-background py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-5xl mx-auto">
@@ -289,24 +293,39 @@ const Index = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {services.map((service, index) => (
-                      <tr key={index} className="border-b border-border">
-                        <td className="px-8 py-6 text-sm font-medium text-foreground">
-                          {service.description}
-                        </td>
-                        <td className="px-8 py-6 text-lg font-bold text-foreground text-right">
-                          ₹{service.amount.toLocaleString('en-IN')}
-                        </td>
-                      </tr>
-                    ))}
-                    <tr className="bg-muted/50">
-                      <td className="px-8 py-6 text-base font-bold text-foreground">
-                        Total (INR)
-                      </td>
-                      <td className="px-8 py-6 text-xl font-bold text-foreground text-right">
-                        ₹{total.toLocaleString('en-IN')}
-                      </td>
-                    </tr>
+                    {services.map((service, index) => {
+                      let rowClass = "border-b border-border";
+                      let textColor = "text-foreground";
+                      let fontWeight = "font-medium";
+                      let textSize = "text-sm";
+                      let amountSize = "text-lg";
+
+                      if (index === 0) {
+                        rowClass = "bg-muted/50 border-b border-border";
+                        fontWeight = "font-bold";
+                      } else if (service.isCredit) {
+                        textColor = "text-green-700";
+                        fontWeight = "font-bold";
+                      } else if (service.isPending) {
+                        rowClass = "border-b border-border bg-orange-50";
+                        textColor = "text-orange-600";
+                        fontWeight = "font-bold";
+                      } else if (service.isAdvance) {
+                        textColor = "text-blue-700";
+                        fontWeight = "font-bold";
+                      }
+
+                      return (
+                        <tr key={index} className={rowClass}>
+                          <td className={`px-8 py-6 ${textSize} ${fontWeight} ${textColor}`}>
+                            {service.description}
+                          </td>
+                          <td className={`px-8 py-6 ${amountSize} ${fontWeight} ${textColor} text-right`}>
+                            {service.isCredit ? '-' : ''}₹{service.amount.toLocaleString('en-IN')}
+                          </td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
@@ -316,10 +335,21 @@ const Index = () => {
             <Card className="shadow-lg border-x border-border">
               <div className="p-8">
                 <h2 className="text-lg font-bold text-foreground mb-6">Payment Terms</h2>
-                <div className="border-l-4 border-success pl-6 py-4">
-                  <p className="text-sm font-bold text-foreground mb-2">Full Payment</p>
-                  <p className="text-xs text-muted-foreground mb-3">Due immediately upon receipt</p>
-                  <p className="text-3xl font-bold text-success">₹{total.toLocaleString('en-IN')}</p>
+                <div className="border-l-4 border-orange-500 pl-6 py-4 mb-4">
+                  <p className="text-sm font-bold text-foreground mb-2">Remaining Payment Due</p>
+                  <p className="text-xs text-muted-foreground mb-3">70% of total amount pending</p>
+                  <p className="text-3xl font-bold text-orange-600">₹{remainingAmount.toLocaleString('en-IN')}</p>
+                </div>
+                <div className="border-l-4 border-blue-500 pl-6 py-4 mb-4">
+                  <p className="text-sm font-bold text-foreground mb-2">Next Month Advance</p>
+                  <p className="text-xs text-muted-foreground mb-3">30% advance for upcoming month</p>
+                  <p className="text-3xl font-bold text-blue-700">₹{nextMonthAdvance.toLocaleString('en-IN')}</p>
+                </div>
+                <Separator className="my-4" />
+                <div className="border-l-4 border-purple-600 pl-6 py-4 bg-purple-50">
+                  <p className="text-base font-bold text-foreground mb-2">Total Amount to Pay</p>
+                  <p className="text-xs text-muted-foreground mb-3">Remaining balance + Next month advance</p>
+                  <p className="text-4xl font-bold text-purple-800">₹{totalPayAmount.toLocaleString('en-IN')}</p>
                 </div>
               </div>
             </Card>
@@ -328,23 +358,23 @@ const Index = () => {
             <Card className="shadow-lg border-x border-b border-border rounded-b-2xl">
               <div className="p-8">
                 <div className="flex flex-col sm:flex-row justify-center gap-6 pdf-hide-buttons">
-                  <Button 
+                  <Button
                     onClick={handleDownloadPDF}
                     size="lg"
                     className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all duration-300"
                   >
                     <svg className="w-6 h-6 mr-3" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.67v4h6V9h3.67L12 2z"/>
+                      <path d="M5 20h14v-2H5v2zm7-18L5.33 9h3.67v4h6V9h3.67L12 2z" />
                     </svg>
                     Download Invoice
                   </Button>
-                  <Button 
+                  <Button
                     onClick={handlePayment}
                     size="lg"
                     className="bg-success hover:bg-success/90 text-success-foreground font-bold text-lg px-8 py-6 shadow-xl hover:shadow-2xl transition-all duration-300"
                   >
                     <svg className="w-6 h-6 mr-3" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z"/>
+                      <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1.41 16.09V20h-2.67v-1.93c-1.71-.36-3.16-1.46-3.27-3.4h1.96c.1 1.05.82 1.87 2.65 1.87 1.96 0 2.4-.98 2.4-1.59 0-.83-.44-1.61-2.67-2.14-2.48-.6-4.18-1.62-4.18-3.67 0-1.72 1.39-2.84 3.11-3.21V4h2.67v1.95c1.86.45 2.79 1.86 2.85 3.39H14.3c-.05-1.11-.64-1.87-2.22-1.87-1.5 0-2.4.68-2.4 1.64 0 .84.65 1.39 2.67 1.91s4.18 1.39 4.18 3.91c-.01 1.83-1.38 2.83-3.12 3.16z" />
                     </svg>
                     Make Full Payment
                   </Button>
@@ -405,13 +435,13 @@ const Index = () => {
           <div className="p-8">
             <h2 className="text-lg font-bold text-foreground mb-2">Chat With Us</h2>
             <p className="text-sm text-muted-foreground mb-4">Open our WhatsApp group chat for support, updates, and additional requirements.</p>
-            <Button 
+            <Button
               onClick={handleChatGroup}
               size="lg"
               className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-8 py-6"
             >
               <svg className="w-6 h-6 mr-2" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M12 3C7.03 3 3 6.58 3 11c0 1.99.74 3.83 2 5.29L4 21l4.85-1.27C10.03 20.58 11 20.77 12 20.77c4.97 0 9-3.58 9-8.77S16.97 3 12 3z"/>
+                <path d="M12 3C7.03 3 3 6.58 3 11c0 1.99.74 3.83 2 5.29L4 21l4.85-1.27C10.03 20.58 11 20.77 12 20.77c4.97 0 9-3.58 9-8.77S16.97 3 12 3z" />
               </svg>
               Chat on WhatsApp
             </Button>
