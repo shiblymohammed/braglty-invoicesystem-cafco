@@ -278,6 +278,61 @@ const Index = () => {
               </div>
             </Card>
 
+            {/* Resources & Analytics Section */}
+            <Card className="shadow-lg border-x border-border">
+              <div className="p-8">
+                <h2 className="text-lg font-bold text-foreground mb-3">Resources & Analytics</h2>
+                <p className="text-sm text-muted-foreground mb-6">
+                  Recent month deliverables and campaign performance results.
+                </p>
+                <Separator className="my-6" />
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div className="rounded-lg border border-border p-6 bg-muted/30">
+                    <p className="text-sm font-bold text-foreground mb-4">📦 Resources Delivered</p>
+                    <ul className="space-y-2 text-sm text-foreground">
+                      <li className="flex items-start">
+                        <span className="mr-2">•</span>
+                        <span>13 Carousel Posters</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="mr-2">•</span>
+                        <span>1 Influencer Video</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="mr-2">•</span>
+                        <span>4 Presentation Videos</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="mr-2">•</span>
+                        <span>Meta Ads Campaign Setup & Management</span>
+                      </li>
+                    </ul>
+                  </div>
+                  <div className="rounded-lg border border-border p-6 bg-muted/30">
+                    <p className="text-sm font-bold text-foreground mb-4">📊 Analytics & Results</p>
+                    <ul className="space-y-2 text-sm text-foreground">
+                      <li className="flex items-start">
+                        <span className="mr-2">•</span>
+                        <span><strong>30K+ Reach</strong> on Instagram & Facebook</span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="mr-2">•</span>
+                        <span>Review Rating: <strong>3.0 → 4.0</strong></span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="mr-2">•</span>
+                        <span>Hiring Campaign: <strong>~150+ Leads</strong></span>
+                      </li>
+                      <li className="flex items-start">
+                        <span className="mr-2">•</span>
+                        <span>Sales Campaign: <strong>~80+ Leads</strong></span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </Card>
+
             {/* Services Table */}
             <Card className="shadow-lg border-x border-border">
               <div className="overflow-x-auto">
@@ -409,60 +464,7 @@ const Index = () => {
           </div>
         </div>
 
-        {/* Resources & Analytics Section */}
-        <Card className="mt-8 shadow-lg border border-border">
-          <div className="p-8">
-            <h2 className="text-lg font-bold text-foreground mb-3">Resources & Analytics</h2>
-            <p className="text-sm text-muted-foreground mb-6">
-              Recent month deliverables and campaign performance results.
-            </p>
-            <Separator className="my-6" />
-            <div className="grid sm:grid-cols-2 gap-6">
-              <div className="rounded-lg border border-border p-6 bg-muted/30">
-                <p className="text-sm font-bold text-foreground mb-4">📦 Resources Delivered</p>
-                <ul className="space-y-2 text-sm text-foreground">
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>13 Carousel Posters</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>1 Influencer Video</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>4 Presentation Videos</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>Meta Ads Campaign Setup & Management</span>
-                  </li>
-                </ul>
-              </div>
-              <div className="rounded-lg border border-border p-6 bg-muted/30">
-                <p className="text-sm font-bold text-foreground mb-4">📊 Analytics & Results</p>
-                <ul className="space-y-2 text-sm text-foreground">
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span><strong>30K+ Reach</strong> on Instagram & Facebook</span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>Review Rating: <strong>3.0 → 4.0</strong></span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>Hiring Campaign: <strong>~150+ Leads</strong></span>
-                  </li>
-                  <li className="flex items-start">
-                    <span className="mr-2">•</span>
-                    <span>Sales Campaign: <strong>~80+ Leads</strong></span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-        </Card>
+
 
         {/* Chat With Us & Call Us */}
         <Card className="mt-8 shadow-lg border border-border">
